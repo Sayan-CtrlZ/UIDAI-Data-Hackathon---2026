@@ -18,9 +18,7 @@
 - [Datasets Used](#datasets-used)
 - [Repository Structure and Purpose](#repository-structure-and-purpose)
 - [Data Storage](#data--data-storage)
-- [Figures](#figures--final-visualizations)
 - [Notebooks](#notebooks--data-analysis-work)
-- [Report](#report--final-submission)
 - [Analysis & Machine Learning Approach](#analysis--machine-learning-approach)
 - [Collaboration Guidelines](#collaboration-guidelines)
 - [Notes and Limitations](#notes-and-limitations)
@@ -33,14 +31,17 @@ data-driven decision-making and improved service delivery.
 
 ## Problem Statement
 
-Aadhaar enrolment and authentication systems generate large volumes of data that
-reflect digital inclusion, service accessibility, and regional operational
-performance. However, this data is often underutilized for proactive planning.
+Aadhaar enrolment and update services generate large volumes of data across regions, districts, and PIN codes.
+However, existing reporting systems primarily provide retrospective summaries, offering limited visibility into underlying societal trends, emerging risks, or future demand.
+This makes it difficult for administrators to anticipate service pressure, understand behavioural patterns, or plan resources proactively.
 
-The objective of this project is to analyze Aadhaar enrolment, biometric
-authentication, and demographic authentication data to identify meaningful trends,
-anomalies, and interpretable predictive signals that can support informed
-administrative and policy decisions.
+### Observed Challenges
+
+- **Enrolment and update demand** is unevenly distributed across regions and PIN codes.
+- **Sudden spikes and abnormal patterns** are often detected only after service disruption.
+- **Capacity planning is largely reactive**, leading to operational stress and longer wait times.
+
+These challenges highlight the need for insights that go beyond static counts and enable early intervention.
 
 
 ## Datasets Used
@@ -68,10 +69,12 @@ The project is organized as follows:
 UIDAI Data Hackathon - 2026/
 ├── data/
 │   ├── processed/
+│   │   ├── analysis/
 │   │   ├── cleaned/
 │   │   │   ├── biometric_clean.csv
 │   │   │   ├── demographic_clean.csv
 │   │   │   └── enrolment_clean.csv
+│   │   ├── forecasts/
 │   │   └── interim/
 │   │       ├── biometric_raw_merged.csv
 │   │       ├── demographic_raw_merged.csv
@@ -87,18 +90,22 @@ UIDAI Data Hackathon - 2026/
 │       │   ├── demographic2.csv
 │       │   ├── demographic3.csv
 │       │   ├── demographic4.csv
-│       │   └── demographic5.csv
+│       │   ├── demographic5.csv
 │       └── enrolment/
 │           ├── enrolment1.csv
 │           ├── enrolment2.csv
-│           └── enrolment3.csv
-├── figures/
+│           ├── enrolment3.csv
+├── models/
+│   └── prophet/
 ├── Notebooks/
+│   ├── state_wise_cleaning/
 │   ├── 01_data_loading.ipynb
 │   ├── 02_enrolment_cleaning.ipynb
 │   ├── 03_biometric_cleaning.ipynb
-│   └── 04_demographic_cleaning.ipynb
-├── report/
+│   ├── 04_demographic_cleaning.ipynb
+│   ├── 05_create_final_datasets.ipynb
+│   ├── 06_enrolment_visuals.ipynb
+│   └── 07_demand_forecasting_prophet.ipynb
 └── README.md
 ```
 
@@ -106,9 +113,10 @@ UIDAI Data Hackathon - 2026/
 - `data/raw/`: Original UIDAI CSV files, organized by type (biometric, demographic, enrolment). Never modify these files.
 - `data/processed/interim/`: Merged raw datasets, used as intermediate files during processing.
 - `data/processed/cleaned/`: Cleaned and final datasets, ready for analysis.
-- `figures/`: For final, high-quality visualizations and plots (currently empty).
-- `Notebooks/`: All Jupyter notebooks for data loading, cleaning, and analysis.
-- `report/`: Final reports and documents for submission (currently empty).
+- `data/processed/analysis/`: Folder for analysis results (e.g., correlations, stats).
+- `data/processed/forecasts/`: Folder for forecast outputs.
+- `models/`: Contains predictive models and scripts (e.g., Prophet) for forecasting.
+- `Notebooks/`: All Jupyter notebooks for data loading, cleaning, and analysis, including state-wise cleaning logic.
 - `README.md`: Project overview and documentation.
 ---
 
@@ -138,18 +146,7 @@ Purpose: Preserve the original data for reference and reproducibility.
 
 ---
 
-## figures/ – Final Visualizations
 
-Contains final, report-ready images only.
-
-*Currently empty. Future visualizations will be saved here.*
-
-Rules:
-- No experimental plots
-- High resolution only
-- Clear filenames
-
----
 
 ## Notebooks/ – Data Analysis Work
 
@@ -170,37 +167,15 @@ Rule: One notebook should have one clear responsibility.
 
 ---
 
-## report/ – Final Submission
 
-Contains the final documents submitted to the jury.
-
-*Currently empty.*
-
-No code files should be placed here.
-
----
 ## Analysis & Machine Learning Approach
 
 The project follows a structured analytical workflow:
 
-- Data cleaning and consolidation of multiple CSV files
-- Exploratory data analysis to study trends, distributions, and regional disparities
-- Comparative analysis of biometric vs demographic authentication usage
-- Detection of anomalies such as sudden spikes or drops in activity
-
-### Machine Learning Techniques
-
-The project uses **simple and interpretable methods**:
-
-- **Linear Regression**
-  - Used for short-term trend forecasting of enrolment and authentication activity
-  - Chosen for interpretability and suitability for time-based data
-
-- **Statistical Anomaly Detection**
-  - Rolling averages and deviation-based methods
-  - Used to identify unusual changes in activity
-
-Models are used for **directional insights**, not exact predictions.
+- **Analyze historical Aadhaar data** to understand user behaviour and regional patterns.
+- **Identify trends and anomalies** through time-based and statistical analysis.
+- **Forecast future enrolment and update demand** using interpretable ML models.
+- **Convert insights** into advisory recommendations for proactive decision-making.
 
 
 ## Collaboration Guidelines
